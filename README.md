@@ -101,7 +101,7 @@ The noise power in a matched receiver of bandwidth $B_n$ is $N = k_B T_0 F B_n$.
 filter, $B_n \simeq 1/\tau$, so the single-pulse signal-to-noise ratio after pulse compression,
 including system losses $L$, is
 
-$$\boxed{\ \mathrm{SNR}_1(R) = \frac{P_t\,G^2\,\lambda^2\,\sigma\,\tau}{(4\pi)^3\,R^4\,k_B T_0 F L}\ }$$
+$$\boxed{\ \mathrm{SNR}_1(R) = \frac{P_t\G^2\lambda^2\sigma\tau}{(4\pi)^3\R^4\k_B T_0 F L}\ }$$
 
 Writing $P_t \tau$ makes explicit that detection depends on the **energy** per pulse, not on peak
 power alone. Note the $R^{-4}$ law: doubling the range costs 12 dB of SNR.
