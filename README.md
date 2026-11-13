@@ -52,7 +52,7 @@ Starting position, from the requirement that the first contact happens at slant 
 
 $$x_0 = \sqrt{R_0^2 - d_{CPA}^2 - h_t^2}$$
 
-$$x(t) = -x_0 + v\,t$$
+$$x(t) = -x_0 + v*t$$
 
 The **slant range** (what the radar measures) and the **ground range** (what the horizon test needs) are
 
@@ -60,7 +60,7 @@ $$R(t) = \sqrt{x(t)^2 + d_{CPA}^2 + h_t^2} \qquad\qquad R_g(t) = \sqrt{x(t)^2 + 
 
 The **radial speed** is the rate of closing, defined positive when approaching:
 
-$$v_r(t) = -\frac{dR}{dt} = -\frac{x(t)\,v}{R(t)}$$
+$$v_r(t) = -\frac{dR}{dt} = -\frac{x(t)\v}{R(t)}$$
 
 This is the key quantity of the whole scenario. It equals $+v$ far out on the inbound leg
 ($x \to -x_0$, $R \to |x|$), passes through **exactly zero at the CPA** ($x = 0$), and tends
