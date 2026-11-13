@@ -60,7 +60,7 @@ $$R(t) = \sqrt{x(t)^2 + d_{CPA}^2 + h_t^2} \qquad\qquad R_g(t) = \sqrt{x(t)^2 + 
 
 The **radial speed** is the rate of closing, defined positive when approaching:
 
-$$v_r(t) = -\frac{dR}{dt} = -\frac{x(t)\v}{R(t)}$$
+$$v_r(t) = -\frac{dR}{dt} = -\frac{x(t)*v}{R(t)}$$
 
 This is the key quantity of the whole scenario. It equals $+v$ far out on the inbound leg
 ($x \to -x_0$, $R \to |x|$), passes through **exactly zero at the CPA** ($x = 0$), and tends
@@ -138,7 +138,7 @@ This expression is exact for a single integrated sample whose amplitude is Rayle
 during the integration, which is precisely the case of coherent integration of a Swerling I target.
 It is also conservative compared with a non-fluctuating (Swerling 0) target at high $P_d$.
 
-**Results with the parameters above** ($P_{fa}=10^{-6}$, $N=32$): $P_d \ge 0.5$ out to about 510 km
+**Results with the parameters above** ($P_{fa}=10^{-6}$ $N=32$): $P_d \ge 0.5$ out to about 510 km
 for $\sigma = 1$ m², 670 km for 3 m² and 760 km for 5 m².
 
 ![snr](figures/01_snr_pd.png)
