@@ -152,10 +152,10 @@ bends rays downwards, which is modelled by replacing the true earth radius $R_e$
 radius $k R_e$, $k = 4/3$. The geometric line-of-sight distance between two points of heights $h_r$
 and $h_t$ over a sphere of radius $kR_e$ is $\sqrt{2kR_e h}$ for each, so
 
-$$d_{hor} = \sqrt{2kR_e h_r} + \sqrt{2kR_e h_t} \;\approx\; 4.12\left(\sqrt{h_r} + \sqrt{h_t}\right)$$
+$$d_{hor} = \sqrt{2kR_e h_r} + \sqrt{2kR_e h_t} \approx\; 4.12\left(\sqrt{h_r} + \sqrt{h_t}\right)$$
 
 with $d_{hor}$ in km and the heights in metres (the constant is
-$\sqrt{2 \cdot \tfrac43 \cdot 6371\,\text{km}}$ in the right units).
+$\sqrt{2 \cdot \tfrac43 \cdot 6371\text{km}}$ in the right units).
 
 With $h_r = 30$ m and $h_t = 14$ km this gives **510 km** — just enough for the 500 km design range.
 This is why the scenario puts the aircraft near its service ceiling: at 10 km altitude the horizon
@@ -172,7 +172,7 @@ A pulse radar cannot tell which transmitted pulse produced a given echo. An echo
 $t_d$ could come from $R = ct_d/2$, or from that range plus any whole number of pulse repetition
 intervals. The maximum range that can be measured without this confusion is
 
-$$R_u = \frac{c}{2\,\mathrm{PRF}}$$
+$$R_u = \frac{c}{2\mathrm{PRF}}$$
 
 and what the radar actually measures is the ambiguous (folded) range
 
@@ -188,16 +188,16 @@ Requiring $R_u \ge 500$ km forces $\mathrm{PRF} \le c/(2R_{max}) = 300$ Hz. The 
 The echo is sampled once per pulse, so the slow-time sampling rate **is** the PRF. By Nyquist, any
 Doppler outside $\pm \mathrm{PRF}/2$ is aliased:
 
-$$f_{d,meas} = \left(f_d + \tfrac{\mathrm{PRF}}{2}\right) \bmod \mathrm{PRF} \;-\; \tfrac{\mathrm{PRF}}{2}$$
+$$f_{d,meas} = \left(f_d + \tfrac{\mathrm{PRF}}{2}\right) \bmod\mathrm{PRF} - \tfrac{\mathrm{PRF}}{2}$$
 
 which is the `wrap` function used throughout the code. The corresponding unambiguous radial speed,
 two-sided (targets may approach or recede), is
 
-$$|v_r| \le v_u = \frac{\lambda\,\mathrm{PRF}}{4}$$
+$$|v_r| \le v_u = \frac{\lambda\mathrm{PRF}}{4}$$
 
 and the **blind speeds**, at which a target looks stationary, are
 
-$$v_{blind} = n\,\frac{\lambda\,\mathrm{PRF}}{2}, \qquad n = 1, 2, 3 \ldots$$
+$$v_{blind} = n\frac{\lambda\mathrm{PRF}}{2}, \qquad n = 1, 2, 3 \ldots$$
 
 With $\lambda = 0.667$ m, the three PRFs give $v_u$ = 41.7, 46.7 and 51.7 m/s only. A 250 m/s target
 is aliased about 6 times over and a 440 m/s one about 10 times.
@@ -210,9 +210,9 @@ Combining the two constraints, a single PRF can be unambiguous in both range and
 
 $$\frac{4 v_{max}}{\lambda} \le \mathrm{PRF} \le \frac{c}{2R_{max}}
 \qquad\Longrightarrow\qquad
-\boxed{\ R_{max}\,v_{max} \le \frac{c\,\lambda}{8}\ }
+\boxed{\ R_{max} v_{max} \le \frac{c \lambda}{8}\ }
 \qquad\Longleftrightarrow\qquad
-\lambda \ge \frac{8\,R_{max}\,v_{max}}{c}$$
+\lambda \ge \frac{8 R_{max} v_{max}}{c}$$
 
 For $R_{max} = 500$ km this requires $\lambda \ge 3.33$ m at 250 m/s and $\lambda \ge 5.87$ m at
 440 m/s — i.e. VHF or HF, impractical for an antenna with useful angular resolution. **No single PRF
@@ -234,7 +234,7 @@ $$R^{(k)} = R_{meas,1} + k\,R_{u,1}, \qquad k = 0,1,2,\ldots$$
 (capped at 800 km, beyond any range of interest) and choose the one minimising the disagreement with
 the other PRFs:
 
-$$\hat{R} = \arg\min_{k} \sum_{i=2}^{3}\ \mathrm{wrap}\!\left(R^{(k)} - R_{meas,i},\; R_{u,i}\right)^2$$
+$$\hat{R} = \arg\min_{k} \sum_{i=2}^{3}\ \mathrm{wrap}\!\left(R^{(k)} - R_{meas,i}*R_{u,i}\right)^2$$
 
 **Doppler.** Identically, with candidates $f_d^{(m)} = f_{d,meas,1} + m\,\mathrm{PRF}_1$ for
 $m = -12\ldots12$ (a span of $\pm 1000$ m/s, comfortably covering the scenario):
@@ -259,19 +259,19 @@ and useless for velocity.
 
 In the range gate containing the target, the complex baseband sample of pulse $n$ is
 
-$$s[n] = A\,e^{\,j 2\pi f_d n / \mathrm{PRF}} + w[n], \qquad n = 0 \ldots N-1$$
+$$s[n] = Ae^{j 2\pi f_d n / \mathrm{PRF}} + w[n], \qquad n = 0 \ldots N-1$$
 
 with $w[n] \sim \mathcal{CN}(0,1)$ and amplitude $A = \sqrt{\mathrm{SNR}_1}$, so the per-pulse SNR is
 $|A|^2$ by construction. Doppler is extracted by a windowed DFT over slow time:
 
-$$S[k] = \sum_{n=0}^{N-1} s[n]\,w_{Ham}[n]\,e^{-j2\pi kn/N_{FFT}}$$
+$$S[k] = \sum_{n=0}^{N-1} s[n]*w_{Ham}[n]e^{-j2\pi kn/N_{FFT}}$$
 
 A Hamming window is applied because an unwindowed rectangular CPI has −13 dB sidelobes, which would
 mask weaker targets; the window trades a slightly wider main lobe for about −43 dB sidelobes.
 
 The **Doppler resolution** is set by the CPI length:
 
-$$\Delta f_d = \frac{1}{T_{CPI}} = \frac{\mathrm{PRF}}{N} \qquad\Rightarrow\qquad \Delta v = \frac{\lambda}{2}\,\frac{\mathrm{PRF}}{N} \approx 2.6\ \text{m/s}$$
+$$\Delta f_d = \frac{1}{T_{CPI}} = \frac{\mathrm{PRF}}{N} \qquad\Rightarrow\qquad \Delta v = \frac{\lambda}{2}\frac{\mathrm{PRF}}{N} \approx 2.6\ \text{m/s}$$
 
 and the **range resolution** by the chirp bandwidth:
 
@@ -288,8 +288,8 @@ the local level from $N_{tr}$ reference cells on each side of the cell under tes
 by $N_g$ guard cells so that target energy leaking into neighbouring bins does not raise the
 threshold. For exponentially distributed power the threshold is
 
-$$T = \alpha\,\frac{1}{N_{tr,total}}\sum_{\text{reference cells}} |S|^2,
-\qquad \alpha = N_{tr,total}\left(P_{fa}^{-1/N_{tr,total}} - 1\right)$$
+$$T = \alpha\frac{1}{N_{tr total}}\sum_{\text{reference cells}} |S|^2,
+\qquad \alpha = N_{tr total}\left(P_{fa}^{-1/N_{tr total}} - 1\right)$$
 
 with $N_{tr,total} = 2N_{tr}$ the total number of reference cells. The spectrum is treated as
 circular, which is correct because the Doppler axis wraps at the PRF.
@@ -301,8 +301,8 @@ circular, which is correct because the Doppler axis wraps at the PRF.
 The simulation does not re-run a matched filter at every epoch; it draws each measurement from its
 theoretical error distribution. The Cramér–Rao bounds for a single CPI give
 
-$$\sigma_R = \frac{c/(2B)}{\sqrt{2\,\mathrm{SNR}_N}} \qquad\qquad
-\sigma_{f_d} = \frac{\mathrm{PRF}/N}{\sqrt{2\,\mathrm{SNR}_N}}$$
+$$\sigma_R = \frac{c/(2B)}{\sqrt{2\mathrm{SNR}_N}} \qquad\qquad
+\sigma_{f_d} = \frac{\mathrm{PRF}/N}{\sqrt{2\mathrm{SNR}_N}}$$
 
 i.e. the resolution cell divided by $\sqrt{2\,\mathrm{SNR}}$ in each dimension. (The range bound
 uses the chirp bandwidth $B$ rather than the strict rms bandwidth $\beta_{rms}$, which differs by a
@@ -316,7 +316,7 @@ exactly what a real radar would see.
 
 A fast target moves during the CPI. The range walk is
 
-$$\Delta R_{mig} = v_r\,T_{CPI} = v_r\,\frac{N}{\mathrm{PRF}}$$
+$$\Delta R_{mig} = v_r*T_{CPI} = v_r\frac{N}{\mathrm{PRF}}$$
 
 For the worst case here, 440 m/s with $N=32$ and PRF 280 Hz, $T_{CPI} = 0.114$ s and
 $\Delta R_{mig} \approx 50$ m. This is well below the 150 m range resolution, so the target stays
